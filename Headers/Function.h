@@ -18,11 +18,11 @@ class Transition;
 
 bool isNum(const string);
 
-bool correct0(string &, const int, set<state> &);
+bool correct0(string &, set<state> &);
 
-bool correct1(const string, int &);
+bool correct1(const string);
 
-bool correct2(string &, const int quan, set<Transition> &);
+bool correct2(string &, set<Transition> &);
 
 bool correct3(const string &);
 

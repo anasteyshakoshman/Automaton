@@ -21,7 +21,7 @@ bool isNum(const string line)
     }
 };
 
-bool correct0(string & user, const int quan, set<state> & res)
+bool correct0(string & user, set<state> & res)
 {
     //Не может сущ. автомат без начальных(конечных) состояний
     if(user.empty()) return false;
@@ -34,7 +34,6 @@ bool correct0(string & user, const int quan, set<state> & res)
             if(it == string::npos) return false;
             tmp = user.substr(0, it);
             if(!isNum(tmp)) return false;
-            if(stoi(tmp) >= quan) return false;
             res.insert(stoi(tmp));
             user.erase(0, ++it);
         }
@@ -42,17 +41,13 @@ bool correct0(string & user, const int quan, set<state> & res)
     }
 };
 
-bool correct1(const string user, int & quan)
+bool correct1(const string user)
 {
-    if(!isNum(user)) return false;
-    else
-    {
-        quan = stoi(user);
-        return quan;
-    }
+    if(!isNum(user) || !stoi(user)) return false;
+    else return true;
 };
 
-bool correct2(string & user, const int quan, set<Transition> & res)
+bool correct2(string & user, set<Transition> & res)
 {
     //Может сущ. автомат с 1 состоянием (одновременно начальным и конечным),
     //и такой автомат будет корректным. Поэтому проверку user.empty() делать не надо
@@ -77,7 +72,6 @@ bool correct2(string & user, const int quan, set<Transition> & res)
             else
             {
                 if(!isNum(tmp2)) return false;
-                if(stoi(tmp2) >= quan) return false;
                 if(!i) tr.setOut(stoi(tmp2));
                 else tr.setIn(stoi(tmp2));
             }
@@ -106,24 +100,22 @@ bool fromFile(ifstream & file, NonDeterAutomaton & automat)
     bool result = false;
     set<state> begin, final;
     set<Transition> trans;
-
     file >> user;
-    if(correct1(user, quan))
+    if(correct1(user))
     {
         file >> user;
-        if(correct0(user, quan, begin))
+        if(correct0(user, begin))
         {
             file >> user;
-            if(correct0(user, quan, final))
+            if(correct0(user, final))
             {
                 file >> user;
-                if(correct2(user, quan, trans))
+                if(correct2(user, trans))
                 {
                     file >> user;
                     if(correct3(user))
                     {
                         automat.setInputWord(user);
-                        automat.setNum(quan);
                         automat.setBegin(begin);
                         automat.setFinal(final);
                         automat.setData(trans);

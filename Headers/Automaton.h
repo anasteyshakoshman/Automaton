@@ -29,8 +29,6 @@ public:
 
     void setFinal(const set<state> &);
 
-    void setNum(const int &);
-
     void setInputWord(const string &);
 
     string getInputWord() const;
@@ -43,7 +41,7 @@ public:
 
     void eraseExtra();
 
-    void eraseFromBeginFinal(const state & key);
+    void eraseFromBeginFinal(const map<state, bool> &);
 
     void wayToBegin(const state &, map<state, bool> &) const;
 
